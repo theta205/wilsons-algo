@@ -11,8 +11,8 @@
 
 using namespace std;
 
-int rows = 10;
-int cols = 10;
+int rows = 15;
+int cols = 30;
 pair<int,int> diagonals[] = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
 
 pair<int,int> dirs[] = {{0,1},{1,0},{0,-1},{-1,0}};
@@ -154,6 +154,12 @@ void genPath(vector<vector<char>> &maze, int x, int y) {
             // cout << path.size() << endl;
 
         }
+        else if(candidates.empty()){
+            while (path.size() > 1){
+                maze[path.back().first][path.back().second] = '#';
+                path.pop_back();
+            }
+        }
         else {
             // Pick a random candidate
             auto [nx, ny] = candidates[rand() % candidates.size()];
@@ -187,6 +193,7 @@ bool validPosition(vector<vector<char>> &maze, int x, int y){
     if(maze[x][y] != '#') return 0;
     int path_neighbors = 0;
     int newX, newY;
+    int dx, dy, count = 0;
 
     for (auto dir : dirs){
         newX = x + dir.first;
@@ -194,23 +201,32 @@ bool validPosition(vector<vector<char>> &maze, int x, int y){
         if( newX >= rows || newY >= cols || newX < 0 || newY < 0) continue;
         if(maze[newX][newY] == ' ' || maze[newX][newY] == '+') path_neighbors++;
     }
+    for (auto dia : diagonals) {
+        dx = dia.first + x;
+        dy = dia.second + y;
+        if (dx >= 0 && dx < rows && dy >= 0 && dy < cols) {
+            if (maze[dx][dy] == ' ')
+                count++;
+        }
+    }
+    if (count > 1) return 0;
     return path_neighbors <= 1;
 }
 
 bool validCand(vector<vector<char>> &maze, vector<pair<int,int>> &path, pair<int,int> p){
     int dx, dy, count = 0;
     if (maze[p.first][p.second] == '#' && find(path.begin(), path.end(), p) == path.end()) {
-        // // 
-        // for (auto dia : diagonals) {
-        //     dx = dia.first + p.first;
-        //     dy = dia.second + p.second;
-        //     if (dx >= 0 && dx < rows && dy >= 0 && dy < cols) {
-        //         if (maze[dx][dy] == '+')
-        //             count++;
-        //     }
-        // }
-        // if (count > 1) return false;
-        // //
+        // 
+        for (auto dia : diagonals) {
+            dx = dia.first + p.first;
+            dy = dia.second + p.second;
+            if (dx >= 0 && dx < rows && dy >= 0 && dy < cols) {
+                if (maze[dx][dy] == '+')
+                    count++;
+            }
+        }
+        if (count > 1) return false;
+        //
         return true;
     }
     return false;
@@ -220,7 +236,7 @@ void printMaze(vector<vector<char>> &maze){
     // cout << "\n\n";
     // cout << rows << " " << cols;
     cout << '\n';
-    for (int i = 0; i < rows + 2; i++) cout << "#";
+    for (int i = 0; i < cols + 2; i++) cout << "#";
     cout << '\n';
 
     for (int i = 0; i < rows; i++){
@@ -238,7 +254,7 @@ void printMaze(vector<vector<char>> &maze){
         }
         cout << "#\n"; 
     }
-    for (int i = 0; i < rows + 2; i++) cout << "#";
+    for (int i = 0; i < cols + 2; i++) cout << "#";
     cout << endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
