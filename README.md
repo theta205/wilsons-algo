@@ -1,6 +1,6 @@
 # Wilson’s Algorithm Maze Generator
 
-A C++ implementation of **Wilson’s Algorithm** for generating perfect mazes — mazes with exactly **one unique path** between any two cells.
+A C++ terminal application that implements Wilson’s Algorithm for generating perfect mazes — mazes with exactly one unique path between any two cells.
 
 ---
 
