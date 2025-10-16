@@ -8,9 +8,6 @@
 #include <thread>
 #include <unordered_map>
 
-
-
-
 using namespace std;
 
 int rows = 15;
@@ -153,7 +150,7 @@ void genPath(vector<vector<char>> &maze, int x, int y) {
             else{
                 retries[nx][ny] = 0;
             }
-            
+
             maze[nx][ny] = '+';
             path.push_back({nx, ny});
         }
