@@ -24,6 +24,7 @@ This produces a **perfect maze** — every cell is reachable, and no cycles exis
 2. make clean (removes the executable)
 3. make run (runs executable)
 
+
 ## File Structure
 ````
 Wilson_Algo/
@@ -31,4 +32,8 @@ Wilson_Algo/
 ├── Makefile        # Build commands
 ├── README.md       # Project documentation
 └── .gitignore      # Ignore build artifacts
+````
 
+## DEMO
+
+![ScreenRecording2025-10-15at8 32 54PM-ezgif com-speed (3)](https://github.com/user-attachments/assets/6446dfcf-adae-4bd1-bf55-4e4f98418e84)
