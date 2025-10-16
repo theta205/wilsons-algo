@@ -24,7 +24,7 @@ This produces a **perfect maze** — every cell is reachable, and no cycles exis
 2. make clean (removes the executable)
 3. make run (runs executable)
 
-
+````
 Wilson_Algo/
 ├── main.cpp        # Core implementation of Wilson's algorithm
 ├── Makefile        # Build commands
