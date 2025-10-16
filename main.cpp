@@ -6,6 +6,8 @@
 #include <stack>
 #include <chrono>
 #include <thread>
+#include <unordered_map>
+
 
 
 
@@ -14,7 +16,6 @@ using namespace std;
 int rows = 15;
 int cols = 30;
 pair<int,int> diagonals[] = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
-
 pair<int,int> dirs[] = {{0,1},{1,0},{0,-1},{-1,0}};
 
 
@@ -81,7 +82,9 @@ bool findValidPosition(vector<vector<char>> &maze, int &x, int &y){
 void genPath(vector<vector<char>> &maze, int x, int y) {
     if (x < 0 || x >= rows || y < 0 || y >= cols) return;
 
-    vector<pair<int,int>> path;          
+    vector<pair<int,int>> path;       
+    vector<vector<int>> retries(rows, vector<int>(cols, 0));
+
     path.push_back({x,y});
     maze[x][y] = '+';
 
@@ -136,6 +139,21 @@ void genPath(vector<vector<char>> &maze, int x, int y) {
         }
         else {
             auto [nx, ny] = candidates[rand() % candidates.size()];
+
+            if(candidates.size() == 1){
+                retries[candidates[0].first][candidates[0].second]++;
+                if(retries[candidates[0].first][candidates[0].second] > 10){
+                    while (path.size() > 1){
+                        maze[path.back().first][path.back().second] = '#';
+                        path.pop_back();
+                    }
+                }
+                retries[candidates[0].first][candidates[0].second] = 0;
+            }
+            else{
+                retries[nx][ny] = 0;
+            }
+            
             maze[nx][ny] = '+';
             path.push_back({nx, ny});
         }
@@ -202,15 +220,7 @@ void printMaze(vector<vector<char>> &maze){
 
     for (int i = 0; i < rows; i++){
         cout << '#';
-        if (i >= maze.size()) { 
-            cout << "[ERROR] i=" << i << " >= maze.size()=" << maze.size() << '\n'; 
-            continue;
-        }
         for (int j = 0; j < cols; j++){
-            if (j >= maze[i].size()) { 
-                cout << "[ERROR] j=" << j << " >= maze[i].size()=" << maze[i].size(); 
-                break; 
-            }
             cout << maze[i][j];
         }
         cout << "#\n"; 
